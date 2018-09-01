@@ -4,7 +4,6 @@ import (
 	"database/sql"
 
 	"github.com/bill-server/go-bill-server/common"
-	"github.com/bill-server/go-bill-server/sfoxdb"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gomodule/redigo/redis"
 	"github.com/op/go-logging"
@@ -13,10 +12,9 @@ import (
 var log = logging.MustGetLogger("cluster")
 
 type SFoxCluster struct {
-	db     *sql.DB
-	pool   *redis.Pool
-	height int64
-	stmts  map[string]*sql.Stmt
+	db    *sql.DB
+	pool  *redis.Pool
+	stmts map[string]*sql.Stmt
 }
 
 func NewSFoxCluster(dbUri string) (*SFoxCluster, error) {
@@ -35,16 +33,11 @@ func NewSFoxCluster(dbUri string) (*SFoxCluster, error) {
 		db:    db,
 		stmts: map[string]*sql.Stmt{},
 	}
-	// if err = cluster.initDb(); err != nil {
-	// 	return nil, err
-	// }
 
-	// if err = cluster.initStmts(); err != nil {
-	// 	return nil, err
-	// }
-	// if err = cluster.initHeight(); err != nil {
-	// 	return nil, err
-	// }
+	if err = cluster.initStmts(); err != nil {
+		return nil, err
+	}
+
 	//初始化redis连接池
 	/*pool := cluster.newPool("127.0.0.1:6379", "")
 	conn := pool.Get()
@@ -73,14 +66,18 @@ func NewSFoxCluster(dbUri string) (*SFoxCluster, error) {
 	return &cluster, nil
 }
 
-func (cluster *SFoxCluster) CurentHeight() (height int64, err error) {
-	return cluster.height, nil
-}
-
-func (cluster *SFoxCluster) QueryTXByID(id int64) (tx *sfoxdb.Tx, err error) {
+func (cluster *SFoxCluster) QueryTXByID(id int64) (tx *common.Tx, err error) {
 	return nil, nil
 }
 
-func (cluster *SFoxCluster) QueryAccountByAddress(address common.AccountID) (account *sfoxdb.Account, err error) {
+func (cluster *SFoxCluster) QueryAccountByAddress(address common.AccountID) (account *common.Account, err error) {
 	return nil, nil
+}
+
+func (cluster *SFoxCluster) InsertAccountData(account *common.Account) (err error) {
+	return nil
+}
+
+func (cluster *SFoxCluster) InsertTx(tx *common.Tx) (err error) {
+	return nil
 }
