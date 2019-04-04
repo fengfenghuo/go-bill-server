@@ -11,11 +11,11 @@ import (
 var log = logger.NewLogInstance("models", "debug", "", "")
 
 func init() {
-	db, err := db.GetDBInstance()
+	d, err := db.GetDBInstance()
 	if err != nil {
 		log.Error(err.Error())
 	}
-	db.RegisterTable(
+	d.RegisterTable(
 		new(Account),
 		new(Tx),
 	)

@@ -53,3 +53,10 @@ func (db *DBInterface) RegisterTable(modules ...interface{}) error {
 	}
 	return nil
 }
+
+func (db *DBInterface) Insert(data interface{}) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+
+	return o.Insert(data)
+}
