@@ -8,7 +8,7 @@ import (
 
 type ErrorCode int32
 
-var log = logger.NewLogInstance("controllers", "debug", "", "")
+var log = logger.FindOrCreateLoggerInstance(logger.NewLoggerConfig("debug", "", "", ""))
 
 const (
 	ErrorNo ErrorCode = 0

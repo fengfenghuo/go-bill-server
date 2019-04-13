@@ -8,7 +8,7 @@ import (
 	"github.com/go-sfox-lib/sfox/log"
 )
 
-var log = logger.NewLogInstance("models", "debug", "", "")
+var log = logger.FindOrCreateLoggerInstance(logger.NewLoggerConfig("debug", "", "", ""))
 
 func init() {
 	d, err := db.GetDBInstance()

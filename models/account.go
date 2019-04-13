@@ -8,7 +8,7 @@ import (
 )
 
 type Account struct {
-	ID         int64     `json:"id" orm:"column(id);auto"`
+	ID         int64     `json:"id" orm:"column(id);auto" gorm:"primary_key"`
 	AccountID  string    `json:"account_id" orm:"column(account_id);unique"`
 	Password   string    `json:"password" orm:"column(password);null"`
 	Email      string    `json:"email" orm:"column(email);null"`
@@ -24,7 +24,7 @@ func (ac *Account) Register() error {
 	if err != nil {
 		return fmt.Errorf("GetDBInstance error: " + err.Error())
 	}
-
+	ac.CreateTime = time.Now()
 	_, err = d.Insert(ac)
 	if err != nil {
 		return fmt.Errorf("Insert error: " + err.Error())

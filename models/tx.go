@@ -42,6 +42,8 @@ func (tx *Tx) CreateTx() error {
 		return fmt.Errorf("GetDBInstance error: " + err.Error())
 	}
 
+	tx.CreateTime = time.Now()
+
 	_, err = d.Insert(tx)
 	if err != nil {
 		return fmt.Errorf("Insert error: " + err.Error())

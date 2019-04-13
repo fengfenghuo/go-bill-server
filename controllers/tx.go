@@ -12,7 +12,6 @@ type TxController struct {
 }
 
 func (tx *TxController) Tx() {
-	log.Debug("xxxxxxTx")
 	defer tx.ServeJSON()
 
 	var t models.Tx
