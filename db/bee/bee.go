@@ -54,3 +54,15 @@ func (db *BeeOrmInterface) QueryAccount(account string, data interface{}) error 
 func (db *BeeOrmInterface) QueryTxesByAccount(account string, count, offset int, data interface{}) error {
 	return nil
 }
+
+func (db *BeeOrmInterface) QueryTxByID(txID int64, data interface{}) error {
+	return nil
+}
+
+func (db *BeeOrmInterface) Update(data interface{}, newData interface{}) error {
+	return nil
+}
+
+func (db *BeeOrmInterface) DeleteTxByID(data interface{}) error {
+	return nil
+}

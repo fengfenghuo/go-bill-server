@@ -13,6 +13,9 @@ type DBInterface interface {
 	Insert(data interface{}) (int64, error)
 	QueryAccount(account string, data interface{}) error
 	QueryTxesByAccount(account string, count, offset int, data interface{}) error
+	QueryTxByID(txID int64, data interface{}) error
+	Update(data interface{}, newData interface{}) error
+	DeleteTxByID(data interface{}) error
 }
 
 var (

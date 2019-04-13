@@ -68,3 +68,27 @@ func (db *GormInterface) QueryTxesByAccount(account string, count, offset int, d
 	}
 	return nil
 }
+
+func (db *GormInterface) QueryTxByID(txID int64, data interface{}) error {
+	dbTemp := db.gormDB.Where("id = ?", txID).Find(data)
+	if dbTemp.Error != nil {
+		return dbTemp.Error
+	}
+	return nil
+}
+
+func (db *GormInterface) Update(data interface{}, newData interface{}) error {
+	dbTemp := db.gormDB.Model(data).Update(newData)
+	if dbTemp.Error != nil {
+		return dbTemp.Error
+	}
+	return nil
+}
+
+func (db *GormInterface) DeleteTxByID(data interface{}) error {
+	dbTemp := db.gormDB.Delete(data)
+	if dbTemp.Error != nil {
+		return dbTemp.Error
+	}
+	return nil
+}
