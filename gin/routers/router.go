@@ -1,7 +1,10 @@
 package routers
 
 import (
-	"github.com/bill-server/go-bill-server-gin/controllers"
+	"strconv"
+
+	"github.com/bill-server/go-bill-server/gin/conf"
+	"github.com/bill-server/go-bill-server/gin/controllers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,5 +24,7 @@ func NewRouter() *Router {
 }
 
 func (router *Router) StartRun() {
-	router.router.Run("28080")
+	port := conf.AppConfig.DefaultInt("httpport", 28080)
+	portStr := strconv.Itoa(port)
+	router.router.Run(":" + portStr)
 }

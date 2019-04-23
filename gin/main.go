@@ -5,7 +5,7 @@ import (
 	"net/http"
 	_ "net/http/pprof"
 
-	"github.com/bill-server/go-bill-server-gin/routers"
+	"github.com/bill-server/go-bill-server/gin/routers"
 )
 
 func main() {
