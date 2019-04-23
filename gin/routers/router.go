@@ -13,7 +13,23 @@ type Router struct {
 }
 
 func NewRouter() *Router {
-	router := gin.Default()
+	runMode := conf.AppConfig.String("runmode")
+	router := gin.New()
+
+	if runMode != "" {
+		var mode string
+		if runMode == "dev" || runMode == "debug" {
+			mode = gin.DebugMode
+		} else if runMode == "test" {
+			mode = gin.TestMode
+		} else if runMode == "prod" || runMode == "release" {
+			mode = gin.ReleaseMode
+		} else {
+			mode = gin.DebugMode
+		}
+		gin.SetMode(mode)
+	}
+
 	accountRouter := router.Group("/account")
 	accountRouter.POST("register", controllers.AccountRegister)
 
@@ -24,7 +40,7 @@ func NewRouter() *Router {
 }
 
 func (router *Router) StartRun() {
-	port := conf.AppConfig.DefaultInt("httpport", 28080)
+	port := conf.AppConfig.DefaultInt("httpport", 38080)
 	portStr := strconv.Itoa(port)
 	router.router.Run(":" + portStr)
 }
