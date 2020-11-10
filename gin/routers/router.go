@@ -3,9 +3,10 @@ package routers
 import (
 	"strconv"
 
+	"github.com/bill-server/go-bill-server/gin/account"
 	"github.com/bill-server/go-bill-server/gin/conf"
-	"github.com/bill-server/go-bill-server/gin/controllers"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
 )
 
 type Router struct {
@@ -30,11 +31,11 @@ func NewRouter() *Router {
 		gin.SetMode(mode)
 	}
 
-	accountRouter := router.Group("/account")
-	accountRouter.POST("register", controllers.AccountRegister)
+	// accountRouter := router.Group("/account")
+	// accountRouter.POST("register", controllers.AccountRegister)
 
-	txRouter := router.Group("/tx")
-	txRouter.POST("/:account", controllers.CreateTx)
+	// txRouter := router.Group("/tx")
+	// txRouter.POST("/:account", controllers.CreateTx)
 
 	return &Router{router: router}
 }
@@ -43,4 +44,9 @@ func (router *Router) StartRun() {
 	port := conf.AppConfig.DefaultInt("httpport", 38080)
 	portStr := strconv.Itoa(port)
 	router.router.Run(":" + portStr)
+}
+
+func (router *Router) StartRunGRPC() {
+	srv := grpc.NewServer()
+	account.RegisterAccountServiceServer(srv, &account.AccountService{})
 }

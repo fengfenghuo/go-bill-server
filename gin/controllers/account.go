@@ -6,7 +6,10 @@ import (
 	// "github.com/bill-server/go-bill-server-gin/models"
 )
 
-func AccountRegister(c *gin.Context) {
+type Account struct {
+}
+
+func (a *Account) AccountRegister(c *gin.Context) {
 	// defer c.ServeJSON()
 
 	// var ac models.Account
