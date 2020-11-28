@@ -13,5 +13,5 @@ func main() {
 		log.Printf(http.ListenAndServe(":6060", nil).Error())
 	}()
 	router := routers.NewRouter()
-	router.StartRun()
+	router.StartRunGRPC()
 }

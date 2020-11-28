@@ -1,8 +1,9 @@
 package routers
 
 import (
-	"strconv"
+	"net"
 
+	"github.com/astaxie/beego/logs"
 	"github.com/bill-server/go-bill-server/gin/account"
 	"github.com/bill-server/go-bill-server/gin/conf"
 	"github.com/gin-gonic/gin"
@@ -11,11 +12,16 @@ import (
 
 type Router struct {
 	router *gin.Engine
+	grpc   net.Listener
 }
 
 func NewRouter() *Router {
+	return &Router{}
+}
+
+func (r *Router) StartRun() {
 	runMode := conf.AppConfig.String("runmode")
-	router := gin.New()
+	r.router = gin.New()
 
 	if runMode != "" {
 		var mode string
@@ -31,22 +37,22 @@ func NewRouter() *Router {
 		gin.SetMode(mode)
 	}
 
-	// accountRouter := router.Group("/account")
+	// accountRouter := r.router.Group("/account")
 	// accountRouter.POST("register", controllers.AccountRegister)
 
-	// txRouter := router.Group("/tx")
-	// txRouter.POST("/:account", controllers.CreateTx)
-
-	return &Router{router: router}
+	port := conf.AppConfig.DefaultString("httpport", "38080")
+	r.router.Run(":" + port)
 }
 
-func (router *Router) StartRun() {
-	port := conf.AppConfig.DefaultInt("httpport", 38080)
-	portStr := strconv.Itoa(port)
-	router.router.Run(":" + portStr)
-}
-
-func (router *Router) StartRunGRPC() {
+func (r *Router) StartRunGRPC() {
 	srv := grpc.NewServer()
 	account.RegisterAccountServiceServer(srv, &account.AccountService{})
+
+	port := conf.AppConfig.DefaultString("httpport", "38080")
+	var err error
+	r.grpc, err = net.Listen("tcp", ":"+port)
+	if err != nil {
+		logs.Error("StartRunGRPC err: %v", err)
+	}
+	srv.Serve(r.grpc)
 }
